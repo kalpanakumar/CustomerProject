@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<servlet>
+		<servlet-name>SignUp</servlet-name>
+		<servlet-class>com.eg.SignUp</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SignUp</servlet-name>
+		<url-pattern>/SignUp</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>LogIn</servlet-name>
+		<servlet-class>com.eg.LogIn</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LogIn</servlet-name>
+		<url-pattern>/LogIn</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>CustomerPage</servlet-name>
+		<servlet-class>com.eg.SaveCustomer</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CustomerPage</servlet-name>
+		<url-pattern>/SaveCustomerData</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>CustomerTodoList</servlet-name>
+		<servlet-class>com.eg.CustomerTodo</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CustomerTodoList</servlet-name>
+		<url-pattern>/CustomerTodoList</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>
