@@ -14,18 +14,29 @@ import javax.jdo.annotations.Persistent;
 
 	    @Persistent
 	    private String Name;
-	   // @Persistent
-	  //  private int mobileNumber;
+	    @Persistent
+	    private int mobileNumber;
 	    @Persistent
 	    private String email;
 	    @Persistent
 	    private String Address;
 	    @Persistent
 	    private String LoginEmail;
+	    @Persistent
+	    private String Id;
 	  //getter and setter methods
 	    
+		
 		public String getLoginEmail() {
 			return LoginEmail;
+		}
+
+		public String getId() {
+			return Id;
+		}
+
+		public void setId(String id) {
+			Id = id;
 		}
 
 		public void setLoginEmail(String loginEmail) {
@@ -40,7 +51,7 @@ import javax.jdo.annotations.Persistent;
 			this.Name = name;
 		}
 
-	/*	public int getMobileNumber() {
+		public int getMobileNumber() {
 			return mobileNumber;
 		}
 
@@ -48,7 +59,7 @@ import javax.jdo.annotations.Persistent;
 			this.mobileNumber = mobileNumber;
 		}
 
-		*/
+		
 		public String getAddress() {
 			return Address;
 		}

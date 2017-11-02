@@ -17,7 +17,7 @@ import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 public class CustomerTodo extends HttpServlet {
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		JSONObject JSON = null;
 		String data = req.getParameter("data");
 		
@@ -25,27 +25,21 @@ public class CustomerTodo extends HttpServlet {
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			JSON = new JSONObject(data);
 			String Item = JSON.getString("TodoItem");
-			HttpSession session = req.getSession();
-			
+			HttpSession session = req.getSession();	
 			String CustomerEmail = session.getAttribute("CustomerEmail").toString();
 			String LogInEmail = session.getAttribute("email").toString();
 			TodoList obj = new TodoList();
 			Query query = new Query("Customer");
-			PreparedQuery pq = datastore.prepare(query);
-			
-				
+			PreparedQuery pq = datastore.prepare(query);				
 			obj.setTodoList(Item);
 			obj.setCustomerEmail(CustomerEmail);
 			obj.setLoginEmail(LogInEmail);
 			PersistenceManager pm = PMF.get().getPersistenceManager();
 			try {
-			 	pm.makePersistent(obj);
-			 	
+			 	pm.makePersistent(obj);			 	
 			} finally {
 				pm.close();
-			}
-			 
-			
+			}	
 			resp.getWriter().write("True");
 			} catch (JSONException e) {
 			// TODO Auto-generated catch block

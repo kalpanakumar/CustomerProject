@@ -1,5 +1,5 @@
 var varDel;
-var ListId = 0;
+//var ListId = 0;
 var list = document.getElementById("CustomerName");
 function ShowFunction() {
 	var showDetails = document.getElementById('Details');
@@ -18,53 +18,51 @@ function ShowFunction() {
 	document.getElementById("Address").value = " ";
 }
 function HideFunction() {
-	ListId++;
-
+	ListId = Math.random();
 	var TodoListValues = [];
-
 	var arr = document.getElementById("todoList").getElementsByTagName("span");
 	for (i = 0; i < arr.length; i++) {
 		TodoListValues[i] = arr[i].innerText;
-
 	}
-
-	console.log("this is arr " + arr[0]);
-	console.log("this is TodoListValues " + TodoListValues);
-
 	var deatailsArray = [];
 	document.getElementById("Create").style.display = 'block';
 	var InputCustomerAddress = document.getElementById("Address").value;
 	var InputCustomer = document.getElementById("Name").value;
 	var InputEmail = document.getElementById("email").value;
+	var InputCustomerNumber = document.getElementById("num").value;
 	var ListItem = document.createElement("li");
 	var ListText = document.createElement("span");
-
-	
+	//var ListEmail = document.createElement("label");
+	//ListEmail.innerText=InputEmail;
+	//ListEmail.style.display = 'none';
+	//console.log(InputEmail);
 
 	ListText.id = ListId;
 	deleteText = document.createElement("lable");
 	deleteText.innerHTML = "&nbsp;&#10007;&nbsp;";
 	deleteText.style.cssFloat = "right";
-	deleteText.id = ListId;
-	
+	deleteText.id = ListId;	
 	ListText.innerText = InputCustomer;
 	ListItem.append(ListText);
+	//ListItem.append(ListEmail);
 	ListItem.append(deleteText);
-	var StoreValue = new Object();
-	StoreValue.CustomerName = InputCustomer;
 	
+	var StoreValue = new Object();
+	StoreValue.CustomerName = InputCustomer;	
 	StoreValue.CustomerEmail = InputEmail;
 	StoreValue.CustomerAddress = InputCustomerAddress;
+	StoreValue.CustomerNumber = InputCustomerNumber;
+	StoreValue.Id = ListId;
 	var json = JSON.stringify(StoreValue);
 
-	if (InputCustomer == " " ) {
+	if (InputCustomer == " ") {
 		alert("Customer name and the email address is required fields please fill that");
 		var showDetails = document.getElementById('Details');
 		showDetails.style.display = 'block';
 	} else {
 		$.ajax({
 			url: 'SaveCustomerData',
-			type:'get',
+			type:'post',
 			data: 'data=' + json,
 				success : function(data) {	
 					if(data =='True'){
@@ -79,13 +77,11 @@ function HideFunction() {
 					}
 				}	
 			});
-		
-
 	}
 
 	deleteText.onclick = DeleteData;
 
-	var InputCustomerNumber = document.getElementById("num").value;
+	//var InputCustomerNumber = document.getElementById("num").value;
 	
 	deatailsArray.push(InputCustomer);
 	deatailsArray.push(InputCustomerNumber);
@@ -99,14 +95,18 @@ function HideFunction() {
 		localStorage.setItem(ListId, JSON.stringify(deatailsArray));
 	}
 	ListItemArray = [];
+	//ListEmail.style.display = 'none';
 	ListText.onclick = getStoreData;
-		
+	
+//console.log("In submit function " + ListId);		
 }
 
 function getStoreData() {
 	var getId = this.id;
 	varDel = getId;
-
+	//console.log("In show  function " + varDel);		
+	//var getemail = this.parentNode.innerText;
+	//console.log(getemail);
 	var showTodoDetails = document.getElementById('DispTodo');
 	showTodoDetails.style.display = 'block';
 	var deletebtn1 = document.createElement("button");
@@ -125,10 +125,11 @@ function getStoreData() {
 
 	var storedNames = JSON.parse(localStorage.getItem(getId));
 
-	document.getElementById("Name").value = storedNames[0];
+	//document.getElementById("Name").value = storedNames[0];
 
-	document.getElementById("num").value = storedNames[1];
-	document.getElementById("Address").value = storedNames[2];
+	//document.getElementById("num").value = storedNames[1];
+	//document.getElementById("Address").value = storedNames[2];
+	
 	var showDetails = document.getElementById('Details');
 	showDetails.style.display = 'block';
 	document.getElementById("todoList").innerHTML = " ";
@@ -150,8 +151,25 @@ function getStoreData() {
 		ListItem.append(ListText);
 		ListItem.append(deleteText);
 		list.appendChild(ListItem);
+		
+		
 		deleteText.onclick = DeleteItem;
 	}
+	var fetchData = new Object();
+	fetchData.Id = getId;
+	var Id_json = JSON.stringify(fetchData);
+	
+	$.ajax({
+		url: 'FetchCustomerData',
+		type:'get',
+		data: 'data=' + Id_json,
+			success : function(data) {	
+				alert("success");
+				console.log("before parsing" + data.Name);
+			var data1 =	JSON.parse(data);
+				console.log("after parsing" + data1.Name);
+				}
+			});
 
 }
 function UpdateData() {
@@ -161,7 +179,6 @@ function UpdateData() {
 	var arr = document.getElementById("todoList").getElementsByTagName("span");
 	for (i = 0; i < arr.length; i++) {
 		TodoListValues[i] = arr[i].innerText;
-
 	}
 
 	var UpdatedName = this.document.getElementById("Name").value;
@@ -253,7 +270,7 @@ Item1.onkeyup = function(event) {
 		var json = JSON.stringify(StoreList);
 		$.ajax({
 			url: 'CustomerTodoList',
-			type:'get',
+			type:'post',
 			data: 'data=' + json,
 				success : function(data) {	
 					if(data =='True'){
