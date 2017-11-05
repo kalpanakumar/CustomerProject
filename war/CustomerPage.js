@@ -18,7 +18,7 @@ function ShowFunction() {
 	document.getElementById("Address").value = " ";
 }
 function HideFunction() {
-	ListId = Math.random();
+	ListId = Math.random() ;;
 	var TodoListValues = [];
 	var arr = document.getElementById("todoList").getElementsByTagName("span");
 	for (i = 0; i < arr.length; i++) {
@@ -158,7 +158,7 @@ function getStoreData() {
 	var fetchData = new Object();
 	fetchData.Id = getId;
 	var Id_json = JSON.stringify(fetchData);
-	
+	console.log(Id_json);
 	$.ajax({
 		url: 'FetchCustomerData',
 		type:'get',
