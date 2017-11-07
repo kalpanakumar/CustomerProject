@@ -18,7 +18,7 @@ function ShowFunction() {
 	document.getElementById("Address").value = " ";
 }
 function HideFunction() {
-	ListId = Math.random() ;;
+	ListId = Math.random() ;
 	var TodoListValues = [];
 	var arr = document.getElementById("todoList").getElementsByTagName("span");
 	for (i = 0; i < arr.length; i++) {
@@ -66,12 +66,20 @@ function HideFunction() {
 			data: 'data=' + json,
 				success : function(data) {	
 					if(data =='True'){
-						alert("Customer is successfully created");
 						list.appendChild(ListItem);
 						var HideDetails = document.getElementById('Details');
 						HideDetails.style.display = 'none';
 						var hideTodoDetails = document.getElementById('DispTodo');
 						hideTodoDetails.style.display = 'none';
+						//add set timeout of 400ms
+						//window.setTimeout(alert("Customer is successfully created");
+						//list.appendChild(ListItem);
+						//var HideDetails = document.getElementById('Details');
+						//HideDetails.style.display = 'none';
+						//var hideTodoDetails = document.getElementById('DispTodo');
+						//hideTodoDetails.style.display = 'none';, milliseconds);
+						
+						//close here
 					}else {
 						alert("email exist");
 					}
@@ -197,7 +205,10 @@ function UpdateData() {
 		localStorage.setItem(varDel, JSON.stringify(deatailsArray));
 		var revomeLi = document.getElementById(varDel);
 		revomeLi.innerText = UpdatedName;
-
+		var showDetails = document.getElementById('Details');
+		showDetails.style.display = 'none';
+		var hideTodoDetails = document.getElementById('DispTodo');
+		hideTodoDetails.style.display = 'none';
 		alert("Your Customer's details has been sucessfully updated");
 	}
 

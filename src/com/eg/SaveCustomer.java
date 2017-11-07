@@ -1,6 +1,8 @@
 package com.eg;
 
 import java.io.IOException;
+
+
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -28,7 +30,7 @@ public class SaveCustomer extends HttpServlet {
 			String LoginEmail = String.valueOf(session.getAttribute("email"));
 			String CustomerEmail = JSON.getString("CustomerEmail");
 			String CustomerId = JSON.getString("Id");
-			session.setAttribute("CustomerEmail", CustomerEmail);
+			session.setAttribute("Id", CustomerId);
 			String Address = JSON.getString("CustomerAddress");
 			Customer c = new Customer();
 			Query q = pm.newQuery(Customer.class,
@@ -81,25 +83,35 @@ public class SaveCustomer extends HttpServlet {
 			// {
 			Query q = pm.newQuery(Customer.class, "Id== '" + CustomerId + "'");
 			List<Customer> CustomerDetails = (List<Customer>) q.execute();
-			System.out.println("customerDeatials " + CustomerDetails);
+			//System.out.println("customerDeatials " + CustomerDetails);
 			if (!CustomerDetails.isEmpty()) {
 				for (Customer obj : CustomerDetails) {
 					String customerId =obj.getId();
-					System.out.println(customerId);
+					//System.out.println(customerId);
 					String Save_Customer_Name = obj.getName();
 					String Save_Customer_Address = obj.getAddress();
 					String Save_Customer_email = obj.getEmail();
 					int Save_Customer_Number = obj.getMobileNumber();
 					System.out.print(Save_Customer_Name + " " + Save_Customer_Address + " " + Save_Customer_email + " "
 							+ Save_Customer_Number);	
-					  JSONObject JSON_send_data = new JSONObject(data);
+					try {
+					CustomerTodo TodoListObj = new CustomerTodo();	
+					List<String> Todo = TodoListObj.getCustomerDetail(customerId);
+					System.out.println(Todo);
+					System.out.println("The control comes to the line after calling the customer's details");
+					}catch( Exception e){
+					e.toString();
+					}
+					
+				/*	  JSONObject JSON_send_data = new JSONObject(data);
 					  JSON_send_data.put("Name", Save_Customer_Name);
 					  JSON_send_data.put("Number", Save_Customer_Number);
 					  JSON_send_data.put("Email", Save_Customer_email);
 					  JSON_send_data.put("Address", Save_Customer_Address);
+					   JSON_send_data.put("TodoList", TodoListObj.getCustomerDetail(customerId));
 					  String jsonText = JSON_send_data.toString();
-					  resp1.getWriter().write(jsonText);
-					   
+					  resp1.getWriter().write(jsonText);*/
+					 
 				}
 			}else{
 				System.out.println("It is empty");

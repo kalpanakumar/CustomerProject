@@ -26,12 +26,12 @@ public class SignUp extends HttpServlet {
 			Query q = pm.newQuery(PojoClass.class, "email== '" + email + "'");
 			List<PojoClass> ReqEmail = (List<PojoClass>) q.execute();
 			if (!ReqEmail.isEmpty()) {
-				resp.setContentType("text/html;charset=UTF-8");
+				//resp.setContentType("text/html;charset=UTF-8");
 				resp.getWriter().write("false");
 			} else {
 				c.setPassword(pass);
 				c.setEmail(email);
-				resp.setContentType("text/html;charset=UTF-8");
+				//resp.setContentType("text/html;charset=UTF-8");
 				try {
 					pm.makePersistent(c);
 				} finally {
