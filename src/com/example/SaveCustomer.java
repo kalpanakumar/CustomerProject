@@ -1,20 +1,23 @@
-package com.eg;
+package com.example;
 
 import java.io.IOException;
+
 
 
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.jdo.Query;
+
+import com.example.jdo.CustomerJDO;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
+import com.google.gson.Gson;
 
 public class SaveCustomer extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -32,10 +35,10 @@ public class SaveCustomer extends HttpServlet {
 			String CustomerId = JSON.getString("Id");
 			session.setAttribute("Id", CustomerId);
 			String Address = JSON.getString("CustomerAddress");
-			Customer c = new Customer();
-			Query q = pm.newQuery(Customer.class,
+			CustomerJDO c = new CustomerJDO();
+			Query q = pm.newQuery(CustomerJDO.class,
 					"email== '" + CustomerEmail + "' && LoginEmail== '" + LoginEmail + "'");
-			List<Customer> ReqEmail = (List<Customer>) q.execute();
+			List<CustomerJDO> ReqEmail = (List<CustomerJDO>) q.execute();
 			if (!ReqEmail.isEmpty()) {
 				resp.getWriter().write("false");
 			} else {
@@ -63,31 +66,17 @@ public class SaveCustomer extends HttpServlet {
 		JSONObject JSON = null;
 		String data = req1.getParameter("data");
 		try {
-			// DatastoreService datastore =
-			// DatastoreServiceFactory.getDatastoreService();
 			PersistenceManager pm = PMF.get().getPersistenceManager();
 			JSON = new JSONObject(data);
 			String CustomerId = JSON.getString("Id");
 			 System.out.println(CustomerId);
-			// Query query = new Query("Customer");
-			// System.out.println("the query is " + query);
-			// PreparedQuery pq =datastore.prepare(query);
-			// System.out.println("the prepared query is " + pq.asIterable());
-			// for (Entity CustomerData : pq.asIterable()) {
 
-			// System.out.print("Comes inside the for loop");
-			// String Save_Customer_Id = (String)
-			// CustomerData.getProperty("Id");
-			// System.out.println(CustomerId);
-			// if (CustomerId.equals(Save_Customer_Id))
-			// {
-			Query q = pm.newQuery(Customer.class, "Id== '" + CustomerId + "'");
-			List<Customer> CustomerDetails = (List<Customer>) q.execute();
-			//System.out.println("customerDeatials " + CustomerDetails);
+			 
+			Query q = pm.newQuery(CustomerJDO.class, "Id== '" + CustomerId + "'");
+			List<CustomerJDO> CustomerDetails = (List<CustomerJDO>) q.execute();
 			if (!CustomerDetails.isEmpty()) {
-				for (Customer obj : CustomerDetails) {
+				for (CustomerJDO obj : CustomerDetails) {
 					String customerId =obj.getId();
-					//System.out.println(customerId);
 					String Save_Customer_Name = obj.getName();
 					String Save_Customer_Address = obj.getAddress();
 					String Save_Customer_email = obj.getEmail();
@@ -102,16 +91,11 @@ public class SaveCustomer extends HttpServlet {
 					}catch( Exception e){
 					e.toString();
 					}
+					JSONObject JSON_send_data = new JSONObject();
+					JSON_send_data.put("Name", Save_Customer_Name);
+					String jsonText = JSON_send_data.toString();
+					resp1.getWriter().write(jsonText);
 					
-				/*	  JSONObject JSON_send_data = new JSONObject(data);
-					  JSON_send_data.put("Name", Save_Customer_Name);
-					  JSON_send_data.put("Number", Save_Customer_Number);
-					  JSON_send_data.put("Email", Save_Customer_email);
-					  JSON_send_data.put("Address", Save_Customer_Address);
-					   JSON_send_data.put("TodoList", TodoListObj.getCustomerDetail(customerId));
-					  String jsonText = JSON_send_data.toString();
-					  resp1.getWriter().write(jsonText);*/
-					 
 				}
 			}else{
 				System.out.println("It is empty");
@@ -119,6 +103,36 @@ public class SaveCustomer extends HttpServlet {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
+	}
+	
+	public void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {	
+		JSONObject JSON = null;
+		String data = req.getParameter("data");
+		System.out.println(data);
+		
+		try {
+			PersistenceManager pm = PMF.get().getPersistenceManager();
+			JSON = new JSONObject(data);
+			String name = JSON.getString("Name");
+			int mobileNumber = Integer.parseInt(JSON.getString("mobileNumber"));
+			String Address = JSON.getString("Address");
+			String Id = JSON.getString("Id");
+			
+			CustomerJDO c = pm.getObjectById(CustomerJDO.class, Id);
+			c.setAddress(Address);
+			c.setMobileNumber(mobileNumber);
+			c.setName(name);
+			
+			try {
+				pm.makePersistent(c);
+			} finally {
+				pm.close();
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
 	}
 }

@@ -1,3 +1,16 @@
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+response.setHeader( "Pragma", "no-cache" );
+response.setHeader( "Cache-Control", "private, no-cache, no-store, must-revalidate proxy-revalidate" );
+response.setDateHeader( "Expires", 0 );
+
+String email = (String) session.getAttribute("email");
+if ((email == null )) {
+response.sendRedirect("/");
+}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +23,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
 <link rel="stylesheet" type="text/css" href="CustomerPageStyle.css">
 </head>
-<body>
+<body onload="LoadData()">
 <div id  = " header" class="well"> Customer's Todo List </div>
 <div class="col-md-4" id ="Customer_Name_List">
 	<button id="btn1" onclick="ShowFunction()">Add Customer</button>
@@ -36,7 +49,8 @@
   </tr>
   <tr>
     <td>Address</td>
-   <td><input class ="inputBox" id="Address" type="text" required></td>   
+   <td><input class ="inputBox" id="Address" type="text" required></td>
+   		<input type="hidden" class ="inputBox" id="id" type="text" ></td>   
   </tr>
     
 </table>

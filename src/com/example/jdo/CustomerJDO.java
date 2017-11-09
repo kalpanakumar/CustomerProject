@@ -1,12 +1,13 @@
-package com.eg;
+package com.example.jdo;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 
 
 	@PersistenceCapable
-	public class Customer {
+	public class CustomerJDO {
 
 	  //  @PrimaryKey
 	  //  @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -23,6 +24,7 @@ import javax.jdo.annotations.Persistent;
 	    @Persistent
 	    private String LoginEmail;
 	    @Persistent
+	    @PrimaryKey
 	    private String Id;
 	  //getter and setter methods
 	    

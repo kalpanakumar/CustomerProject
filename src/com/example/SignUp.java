@@ -1,4 +1,4 @@
-package com.eg;
+package com.example;
 
 import java.io.IOException;
 
@@ -6,6 +6,8 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.*;
 import javax.jdo.Query;
+
+import com.example.jdo.LoginJDO;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
@@ -22,9 +24,9 @@ public class SignUp extends HttpServlet {
 			String email = JSON.getString("EnterEmail").toLowerCase();
 			HttpSession session = req.getSession();
 			session.setAttribute("email", email);
-			PojoClass c = new PojoClass();
-			Query q = pm.newQuery(PojoClass.class, "email== '" + email + "'");
-			List<PojoClass> ReqEmail = (List<PojoClass>) q.execute();
+			LoginJDO c = new LoginJDO();
+			Query q = pm.newQuery(LoginJDO.class, "email== '" + email + "'");
+			List<LoginJDO> ReqEmail = (List<LoginJDO>) q.execute();
 			if (!ReqEmail.isEmpty()) {
 				//resp.setContentType("text/html;charset=UTF-8");
 				resp.getWriter().write("false");

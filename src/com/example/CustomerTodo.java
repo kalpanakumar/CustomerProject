@@ -1,4 +1,4 @@
-package com.eg;
+package com.example;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import javax.jdo.Query;
+
+import com.example.jdo.CustomerJDO;
+import com.example.jdo.TodoListJDO;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
@@ -27,8 +30,8 @@ public class CustomerTodo extends HttpServlet {
 			HttpSession session = req.getSession();
 			String CustomerId = session.getAttribute("Id").toString();
 			String LogInEmail = session.getAttribute("email").toString();
-			TodoList obj = new TodoList();
-			Query q = pm.newQuery(TodoList.class);
+			TodoListJDO obj = new TodoListJDO();
+			Query q = pm.newQuery(TodoListJDO.class);
 			obj.setTodoList(Item);
 			obj.setId(CustomerId);
 			obj.setLoginEmail(LogInEmail);
@@ -48,10 +51,10 @@ public class CustomerTodo extends HttpServlet {
 		System.out.println("The lodolist comes here");
 		List<String> TodoList = new ArrayList<String>();
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Query q = pm.newQuery(TodoList.class, "Id== '" + CustomerId + "'");
-		List<Customer> CustomerTodo = (List<Customer>) q.execute();
+		Query q = pm.newQuery(TodoListJDO.class, "Id== '" + CustomerId + "'");
+		List<CustomerJDO> CustomerTodo = (List<CustomerJDO>) q.execute();
 		if (!CustomerTodo.isEmpty()) {
-			for (Customer obj : CustomerTodo) 
+			for (CustomerJDO obj : CustomerTodo) 
 			{
 				String Get_Todo = obj.getId();
 				TodoList.add(Get_Todo);

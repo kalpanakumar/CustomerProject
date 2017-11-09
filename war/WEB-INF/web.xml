@@ -6,7 +6,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
 		<servlet-name>SignUp</servlet-name>
-		<servlet-class>com.eg.SignUp</servlet-class>
+		<servlet-class>com.example.SignUp</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>SignUp</servlet-name>
@@ -14,7 +14,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>LogIn</servlet-name>
-		<servlet-class>com.eg.LogIn</servlet-class>
+		<servlet-class>com.example.LogIn</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>LogIn</servlet-name>
@@ -22,7 +22,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>CustomerPage</servlet-name>
-		<servlet-class>com.eg.SaveCustomer</servlet-class>
+		<servlet-class>com.example.SaveCustomer</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CustomerPage</servlet-name>
@@ -34,12 +34,36 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>CustomerTodoList</servlet-name>
-		<servlet-class>com.eg.CustomerTodo</servlet-class>
+		<servlet-class>com.example.CustomerTodo</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CustomerTodoList</servlet-name>
 		<url-pattern>/CustomerTodoList</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>fetchCust</servlet-name>
+		<servlet-class>com.example.FetchAllCust</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>fetchCust</servlet-name>
+		<url-pattern>/Fetchall</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	<servlet>
+		<servlet-name>FetchCustById</servlet-name>
+		<servlet-class>com.example.FetchCustById</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FetchCustById</servlet-name>
+		<url-pattern>/FetchCustById</url-pattern>
+	</servlet-mapping>
+	
+	
+	FetchCustById
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

@@ -1,9 +1,9 @@
-package com.eg;
+package com.example.jdo;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
 @PersistenceCapable
-public class TodoList {
+public class TodoListJDO {
 	
 	 @Persistent
 	    private String Id;

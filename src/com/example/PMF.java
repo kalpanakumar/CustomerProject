@@ -1,4 +1,4 @@
-package com.eg;
+package com.example;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;

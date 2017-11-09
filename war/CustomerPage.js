@@ -1,3 +1,4 @@
+
 var varDel;
 //var ListId = 0;
 var list = document.getElementById("CustomerName");
@@ -10,7 +11,6 @@ function ShowFunction() {
 	CreateBtn.style.display = "block";
 	var UpdateBtn = document.getElementById("Update");
 	UpdateBtn.style.display = "none";
-
 	document.getElementById("todoList").innerHTML = " ";
 	document.getElementById("Name").value = " ";
 	document.getElementById("num").value = " ";
@@ -60,6 +60,7 @@ function HideFunction() {
 		var showDetails = document.getElementById('Details');
 		showDetails.style.display = 'block';
 	} else {
+		console.log(json);
 		$.ajax({
 			url: 'SaveCustomerData',
 			type:'post',
@@ -71,15 +72,6 @@ function HideFunction() {
 						HideDetails.style.display = 'none';
 						var hideTodoDetails = document.getElementById('DispTodo');
 						hideTodoDetails.style.display = 'none';
-						//add set timeout of 400ms
-						//window.setTimeout(alert("Customer is successfully created");
-						//list.appendChild(ListItem);
-						//var HideDetails = document.getElementById('Details');
-						//HideDetails.style.display = 'none';
-						//var hideTodoDetails = document.getElementById('DispTodo');
-						//hideTodoDetails.style.display = 'none';, milliseconds);
-						
-						//close here
 					}else {
 						alert("email exist");
 					}
@@ -105,6 +97,7 @@ function HideFunction() {
 	ListItemArray = [];
 	//ListEmail.style.display = 'none';
 	ListText.onclick = getStoreData;
+	//ListText.onclick = setAttribute("onClick","test("+ListText.Id+")");
 	
 //console.log("In submit function " + ListId);		
 }
@@ -192,9 +185,7 @@ function UpdateData() {
 	var UpdatedName = this.document.getElementById("Name").value;
 	var UpdatedNum = this.document.getElementById("num").value;
 	var UpdatedAddress = this.document.getElementById("Address").value;
-	deatailsArray.push(UpdatedName);
-	deatailsArray.push(UpdatedNum);
-	deatailsArray.push(UpdatedAddress);
+	var id = this.document.getElementById("id").value;
 
 	deatailsArray.push(varDel);
 	deatailsArray.push(TodoListValues);
@@ -202,15 +193,35 @@ function UpdateData() {
 	if (UpdatedName == "") {
 		alert("Enter the customer")
 	} else {
-		localStorage.setItem(varDel, JSON.stringify(deatailsArray));
-		var revomeLi = document.getElementById(varDel);
-		revomeLi.innerText = UpdatedName;
+		//localStorage.setItem(varDel, JSON.stringify(deatailsArray));
+		//var revomeLi = document.getElementById(varDel);
+		//revomeLi.innerText = UpdatedName;
 		var showDetails = document.getElementById('Details');
 		showDetails.style.display = 'none';
 		var hideTodoDetails = document.getElementById('DispTodo');
 		hideTodoDetails.style.display = 'none';
 		alert("Your Customer's details has been sucessfully updated");
 	}
+	 
+	formData = (JSON.stringify({ "Name": UpdatedName, "mobileNumber" : UpdatedNum,"Address":UpdatedAddress,"Id":id}));
+	console.log(formData)
+	$.ajax({
+		url: 'SaveCustomerData?data='+formData,
+		type:'put',
+		data:formData,
+		success : function(data) {	
+				if(data =='True'){
+					list.appendChild(ListItem);
+					var HideDetails = document.getElementById('Details');
+					HideDetails.style.display = 'none';
+					var hideTodoDetails = document.getElementById('DispTodo');
+					hideTodoDetails.style.display = 'none';
+				}else {
+					alert("email exist");
+				}
+			}	
+		});
+	
 
 }
 function DeleteData() {
@@ -299,11 +310,9 @@ Item1.onkeyup = function(event) {
 };
 
 function add()
-
 {
 	GetItem = Item1.value
 	if (!GetItem) {
-
 		return false;
 	} else {
 		var SetList = document.getElementById("todoList");
@@ -314,5 +323,47 @@ function add()
 }
 // ajax part
 
+function LoadData(){
+	$.ajax({
+		url: 'Fetchall',
+		type:'get',
+			success : function(data) {
+					var CustomerName = data.Name;
+					var obj = JSON.parse(data)					
+					for(var i=0;i<obj.length;i++){
+						var ListItem = document.createElement("li");
+						var ListText = document.createElement("span");
+						ListText.setAttribute("id",obj[i].Id)
+						ListText.setAttribute("class","fetch")
+						ListText.setAttribute("onClick","test("+obj[i].Id+")")
+						ListText.innerText = obj[i].Name;
+						ListItem.append(ListText);
+						list.append(ListItem);						
+					}
+				}	
+		});
+}
 
-
+function test(id) {
+	$("#Create").hide();
+	$.ajax({
+		url: 'FetchCustById',
+		type:'get',
+		data: 'data=' + id,
+			success : function(data) {	
+				alert("success");
+				var showDetails = document.getElementById('Details');
+				showDetails.style.display = 'block';
+				var hideTodoDetails = document.getElementById('DispTodo');
+				hideTodoDetails.style.display = 'block';
+			var data1 = JSON.parse(data);
+				console.log("after parsing" + data1[0].Name);
+				document.getElementById("Name").value = data1[0].Name;
+				document.getElementById("num").value = data1[0].mobileNumber;
+				document.getElementById("Address").value = data1[0].Address;
+				document.getElementById("email").value = data1[0].email;
+				document.getElementById("id").value = data1[0].Id;
+				window.data = data1[0];
+				}
+			});
+}
